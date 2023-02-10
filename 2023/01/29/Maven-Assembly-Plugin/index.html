@@ -49,7 +49,119 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
 
 <body>
   <div id="container">
@@ -119,7 +231,16 @@
 <p>当然，上述插件在打包项目依赖的jar包条目和一些简单资源项时，是十分便利够用的。如果涉及更加复杂的资源条目打包或者更加精细的资源控制时，Maven官方推荐使用<em>maven-shade-plugin</em>。</p>
 <h2 id="2-Maven-Assembly插件"><a href="#2-Maven-Assembly插件" class="headerlink" title="2. Maven Assembly插件"></a>2. Maven Assembly插件</h2><p>Maven Assembly插件的作用是组合项目的构建输出（包括依赖项、子模块和文档等）并将其压缩到单个文件中。文件的类型并不局限于<em>jar</em>，也可以是<em>zip</em>、<em>tar</em>、<em>tar.gz</em>、<em>dir</em>和<em>war</em>等。</p>
 <h3 id="2-1-在项目中引入插件"><a href="#2-1-在项目中引入插件" class="headerlink" title="2.1 在项目中引入插件"></a>2.1 在项目中引入插件</h3><p>在<em>pom.xml</em>文件中的<code>&lt;build&gt; &lt;plugins&gt;</code>条目中添加插件坐标。</p>
-<figure class="highlight xml"><figcaption><span>在pom.xml中引入Maven Assembly Plugin</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 引入maven-assembly-plugin --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><div class="caption"><span>在pom.xml中引入Maven Assembly Plugin</span></div><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">project</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+		<span class="hljs-comment">&lt;!-- 引入maven-assembly-plugin --&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre>
 
 <h3 id="2-2-使用预定义描述符"><a href="#2-2-使用预定义描述符" class="headerlink" title="2.2 使用预定义描述符"></a>2.2 使用预定义描述符</h3><p>预定义描述符（prefabricated assembly descriptors)是Assembly插件为了方便打包引入的一系列可复用的操作集合。在使用预定义描述符的情况下，只进行简略的配置即可完成资源的打包整合工作。</p>
 <p>Assembly插件提供了四个预定义描述符：</p>
@@ -130,13 +251,41 @@
 <li><em>project</em></li>
 </ol>
 <p>若打包中想要添加依赖项，最简便的方法就是使用<em>jar-with-dependencies</em>描述符。</p>
-<figure class="highlight xml"><figcaption><span>配置预定义描述符</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><div class="caption"><span>配置预定义描述符</span></div><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRefs</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRef</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRefs</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></code></pre>
 
 <p>若想要构建可执行jar包，则需要进一步配置jar包的清单文件</p>
-<figure class="highlight xml"><figcaption><span>配置jar包清单项</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!-- 在mainClass中指定入口类的全限定类名 --&gt;</span>	</span><br><span class="line">				<span class="tag">&lt;<span class="name">mainClass</span>&gt;</span><span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><div class="caption"><span>配置jar包清单项</span></div><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">archive</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">manifest</span>&gt;</span>
+				<span class="hljs-comment">&lt;!-- 在mainClass中指定入口类的全限定类名 --&gt;</span>	
+				<span class="hljs-tag">&lt;<span class="hljs-name">mainClass</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">mainClass</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">manifest</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">archive</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRefs</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRef</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRefs</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></code></pre>
 
 <p>如果想要将源代码打包为压缩文件作为项目发布的条目，则可以使用<em>src</em>描述符。</p>
-<figure class="highlight xml"><figcaption><span>源代码打包</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>src<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><div class="caption"><span>源代码打包</span></div><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRefs</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRef</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRef</span>&gt;</span>src<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRef</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRefs</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></code></pre>
 
 <p>src默认会将项目的源代码和资源文件进行压缩，得到诸如<em>zip</em>和<em>tar.gz</em>格式类型的压缩包，便于源代码的发布。</p>
 <h3 id="2-3-绑定生命周期"><a href="#2-3-绑定生命周期" class="headerlink" title="2.3 绑定生命周期"></a>2.3 绑定生命周期</h3><p><em>maven-assembly-plugin</em>只会将项目构建输出目录下的资源进行整合打包。如果项目还没有被编译，那么执行此插件并不会得到预期的效果。因此将插件的执行绑定到maven的一个生命周期执行环节是十分明智的选择。</p>
@@ -149,7 +298,26 @@
 <p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/220209jar.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/220209jar.png"></a></p>
 <p>综上所述，我们期望插件在Maven构建过程中一个恰当的生命周期中被执行，这样可以准确地得到预期的输出。这就需要将插件的执行和Maven构建生命周期相绑定。</p>
 <p>显然，我们期望<em>maven-assembly-plugin</em>在项目被编译完之后，尤其是在Maven生命周期的打包阶段被执行。为此，需要在插件的配置项中添加如下规则配置：</p>
-<figure class="highlight xml"><figcaption><span>绑定Assembly插件的生命周期</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="tag">&lt;/<span class="name">descriptorRef</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">descriptorRefs</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 配置插件的执行时机 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">id</span>&gt;</span>package-with-deps<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 配置在打包阶段执行此插件 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">phase</span>&gt;</span>package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!-- 配置插件的执行目标 --&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">goal</span>&gt;</span>single<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre><div class="caption"><span>绑定Assembly插件的生命周期</span></div><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-assembly-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRefs</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">descriptorRef</span>&gt;</span>jar-with-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRef</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">descriptorRefs</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span>
+<span class="hljs-comment">&lt;!-- 配置插件的执行时机 --&gt;</span>
+	<span class="hljs-tag">&lt;<span class="hljs-name">executions</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">execution</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>package-with-deps<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+			<span class="hljs-comment">&lt;!-- 配置在打包阶段执行此插件 --&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">phase</span>&gt;</span>package<span class="hljs-tag">&lt;/<span class="hljs-name">phase</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">goals</span>&gt;</span>
+				<span class="hljs-comment">&lt;!-- 配置插件的执行目标 --&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">goal</span>&gt;</span>single<span class="hljs-tag">&lt;/<span class="hljs-name">goal</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">goals</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">execution</span>&gt;</span>
+	<span class="hljs-tag">&lt;/<span class="hljs-name">executions</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></code></pre>
 
 <p>绑定完生命周期之后，在构建时并不需要显式调用插件执行，插件会在绑定的阶段自动执行，完成它的使命。</p>
 <p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/220209%E5%88%9D%E5%A7%8B%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/220209%E5%88%9D%E5%A7%8B%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84.png"></a></p>
@@ -163,7 +331,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/" data-id="cldy9ywm00006oo8h69dj6ik4" data-title="Maven Assembly Plugin" class="article-share-link">分享</a>
+      <a data-url="https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/" data-id="cldyaou4f00032z8h4jaw127m" data-title="Maven Assembly Plugin" class="article-share-link">分享</a>
       
       
       

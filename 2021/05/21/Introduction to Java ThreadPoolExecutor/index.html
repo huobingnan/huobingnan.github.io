@@ -260,15 +260,73 @@ mjx-container[display="true"] + br {
 
 <h2 id="4-如何让线程不被销毁"><a href="#4-如何让线程不被销毁" class="headerlink" title="4. 如何让线程不被销毁"></a>4. 如何让线程不被销毁</h2><hr>
 <p>文章开头说到，线程在执行完毕之后会被操作系统回收销毁，那么线程池时如何保障线程不被销毁？首先看一个测试用例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">testThreadState</span><span class="params">()</span></span><br><span class="line">{</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(() -&gt; System.out.println(<span class="string">"Hello world"</span>)); <span class="comment">// 创建一个线程</span></span><br><span class="line">    System.out.println(thread.getState()); <span class="comment">// 此时线程的状态为NEW</span></span><br><span class="line">    thread.start(); <span class="comment">// 启动线程，状态为RUNNING</span></span><br><span class="line">    System.out.println(thread.getState());</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    {</span><br><span class="line">      thread.join();</span><br><span class="line">      System.out.println(thread.getState()); <span class="comment">// 线程运行结束，状态为TERMINATED</span></span><br><span class="line">      thread.start(); <span class="comment">// 此时再启动线程会发生什么呢？</span></span><br><span class="line">    } <span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">    {</span><br><span class="line">      e.printStackTrace();</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testThreadState</span><span class="hljs-params">()</span>
+{
+    <span class="hljs-type">Thread</span> <span class="hljs-variable">thread</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; System.out.println(<span class="hljs-string">"Hello world"</span>)); <span class="hljs-comment">// 创建一个线程</span>
+    System.out.println(thread.getState()); <span class="hljs-comment">// 此时线程的状态为NEW</span>
+    thread.start(); <span class="hljs-comment">// 启动线程，状态为RUNNING</span>
+    System.out.println(thread.getState());
+    <span class="hljs-keyword">try</span>
+    {
+      thread.join();
+      System.out.println(thread.getState()); <span class="hljs-comment">// 线程运行结束，状态为TERMINATED</span>
+      thread.start(); <span class="hljs-comment">// 此时再启动线程会发生什么呢？</span>
+    } <span class="hljs-keyword">catch</span> (InterruptedException e)
+    {
+      e.printStackTrace();
+    }
+}</code></pre>
 
 <p>结果输出：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NEW</span><br><span class="line">RUNNABLE</span><br><span class="line">Hello world</span><br><span class="line">TERMINATED</span><br><span class="line">Exception in thread "main" java.lang.IllegalThreadStateException</span><br><span class="line">	at java.base/java.lang.Thread.start(Thread.java:794)</span><br><span class="line">	at misc.ThreadPoolExecutorTest.testThreadState(ThreadPoolExecutorTest.java:90)</span><br><span class="line">	at misc.ThreadPoolExecutorTest.main(ThreadPoolExecutorTest.java:114)</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs shell">NEW
+RUNNABLE
+Hello world
+TERMINATED
+Exception in thread "main" java.lang.IllegalThreadStateException
+	at java.base/java.lang.Thread.start(Thread.java:794)
+	at misc.ThreadPoolExecutorTest.testThreadState(ThreadPoolExecutorTest.java:90)
+	at misc.ThreadPoolExecutorTest.main(ThreadPoolExecutorTest.java:114)</code></pre>
 
 <p>可以看出，当一个线程运行结束之后，我们是不可能让线程起死回生重新启动的。既然如此ThreadPoolExecutor如何保障线程执行完一个任务不被销毁而继续执行下一个任务呢？</p>
 <p>其实这里就要讲到我们最开始传入的参数<code>workQueue</code>，它的接口类型为<code>BlockingQueue&lt;T&gt;</code>，直译过来就是阻塞队列。这中队列有个特点，<strong>就是当队列为空而尝试出队操作时会阻塞</strong>。</p>
 <p>基于阻塞队列的如上特点，ThreadPoolExecutor采用<strong>不断循环+阻塞队列</strong>的方式来实现线程不被销毁。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">runWorker</span><span class="params">(Worker w)</span> {</span><br><span class="line">   <span class="type">Thread</span> <span class="variable">wt</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">   <span class="type">Runnable</span> <span class="variable">task</span> <span class="operator">=</span> w.firstTask;</span><br><span class="line">   w.firstTask = <span class="literal">null</span>;</span><br><span class="line">   w.unlock(); <span class="comment">// allow interrupts</span></span><br><span class="line">   <span class="type">boolean</span> <span class="variable">completedAbruptly</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">   <span class="keyword">try</span> {</span><br><span class="line">     <span class="comment">// 从工作队列中不断取任务。如果工作队列为空，那么程序会阻塞在这里</span></span><br><span class="line">     <span class="keyword">while</span> (task != <span class="literal">null</span> || (task = getTask()) != <span class="literal">null</span>) {</span><br><span class="line">       w.lock();</span><br><span class="line">      	<span class="comment">// 检查线程池状态</span></span><br><span class="line">       <span class="keyword">if</span> ((runStateAtLeast(ctl.get(), STOP) ||</span><br><span class="line">            (Thread.interrupted() &amp;&amp;</span><br><span class="line">             runStateAtLeast(ctl.get(), STOP))) &amp;&amp;</span><br><span class="line">           !wt.isInterrupted())</span><br><span class="line">         wt.interrupt();</span><br><span class="line">       <span class="keyword">try</span> {</span><br><span class="line">         beforeExecute(wt, task);</span><br><span class="line">         <span class="keyword">try</span> {</span><br><span class="line">           <span class="comment">//// 执行任务 ////</span></span><br><span class="line">           task.run();</span><br><span class="line">           afterExecute(task, <span class="literal">null</span>);</span><br><span class="line">         } <span class="keyword">catch</span> (Throwable ex) {</span><br><span class="line">           afterExecute(task, ex);</span><br><span class="line">           <span class="keyword">throw</span> ex;</span><br><span class="line">         }</span><br><span class="line">       } <span class="keyword">finally</span> {</span><br><span class="line">         task = <span class="literal">null</span>;</span><br><span class="line">         w.completedTasks++;</span><br><span class="line">         w.unlock();</span><br><span class="line">       }</span><br><span class="line">     }</span><br><span class="line">     completedAbruptly = <span class="literal">false</span>;</span><br><span class="line">   } <span class="keyword">finally</span> {</span><br><span class="line">     processWorkerExit(w, completedAbruptly);</span><br><span class="line">   }</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs java"><span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">runWorker</span><span class="hljs-params">(Worker w)</span> {
+   <span class="hljs-type">Thread</span> <span class="hljs-variable">wt</span> <span class="hljs-operator">=</span> Thread.currentThread();
+   <span class="hljs-type">Runnable</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> w.firstTask;
+   w.firstTask = <span class="hljs-literal">null</span>;
+   w.unlock(); <span class="hljs-comment">// allow interrupts</span>
+   <span class="hljs-type">boolean</span> <span class="hljs-variable">completedAbruptly</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+   <span class="hljs-keyword">try</span> {
+     <span class="hljs-comment">// 从工作队列中不断取任务。如果工作队列为空，那么程序会阻塞在这里</span>
+     <span class="hljs-keyword">while</span> (task != <span class="hljs-literal">null</span> || (task = getTask()) != <span class="hljs-literal">null</span>) {
+       w.lock();
+      	<span class="hljs-comment">// 检查线程池状态</span>
+       <span class="hljs-keyword">if</span> ((runStateAtLeast(ctl.get(), STOP) ||
+            (Thread.interrupted() &amp;&amp;
+             runStateAtLeast(ctl.get(), STOP))) &amp;&amp;
+           !wt.isInterrupted())
+         wt.interrupt();
+       <span class="hljs-keyword">try</span> {
+         beforeExecute(wt, task);
+         <span class="hljs-keyword">try</span> {
+           <span class="hljs-comment">//// 执行任务 ////</span>
+           task.run();
+           afterExecute(task, <span class="hljs-literal">null</span>);
+         } <span class="hljs-keyword">catch</span> (Throwable ex) {
+           afterExecute(task, ex);
+           <span class="hljs-keyword">throw</span> ex;
+         }
+       } <span class="hljs-keyword">finally</span> {
+         task = <span class="hljs-literal">null</span>;
+         w.completedTasks++;
+         w.unlock();
+       }
+     }
+     completedAbruptly = <span class="hljs-literal">false</span>;
+   } <span class="hljs-keyword">finally</span> {
+     processWorkerExit(w, completedAbruptly);
+   }
+}</code></pre>
 
 <h2 id="5-关闭线程池"><a href="#5-关闭线程池" class="headerlink" title="5. 关闭线程池"></a>5. 关闭线程池</h2><hr>
 <p>想要关闭线程池可以通过调用<code>shutdown()</code>和<code>shutdownNow()</code>方法实现。两种方法有所不同，其中调用<code>shutdown()</code>方法会停止接收新的任务，处理工作队列中的任务，调用这个方法之后线程池会进入SHUTDOWN状态，此方法无返回值并且不抛出异常。</p>
@@ -295,7 +353,7 @@ mjx-container[display="true"] + br {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://huobingnan.github.io/2021/05/21/Introduction%20to%20Java%20ThreadPoolExecutor/" data-id="cldy9ywlw0001oo8hh83j4qvx" data-title="Introduction to Java ThreadPoolExecutor" class="article-share-link">分享</a>
+      <a data-url="https://huobingnan.github.io/2021/05/21/Introduction%20to%20Java%20ThreadPoolExecutor/" data-id="cldyaou4h00062z8hh22s3yn6" data-title="Introduction to Java ThreadPoolExecutor" class="article-share-link">分享</a>
       
       
       
