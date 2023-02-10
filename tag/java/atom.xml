@@ -5,9 +5,9 @@
     <link href="https://huobingnan.github.io" />
     <updated>2023-01-28T16:00:00.000Z</updated>
     <category term="Java" />
+    <category term="Garbage Collection" />
     <category term="OS" />
     <category term="Concurrency" />
-    <category term="Garbage Collection" />
     <category term="Maven" />
     <entry>
         <id>https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/</id>
@@ -156,7 +156,7 @@
 &lt;h3 id=&#34;3-2-标记复制（Mark-Copy）&#34;&gt;&lt;a href=&#34;#3-2-标记复制（Mark-Copy）&#34; class=&#34;headerlink&#34; title=&#34;3.2 标记复制（Mark-Copy）&#34;&gt;&lt;/a&gt;3.2 标记复制（Mark-Copy）&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.png&#34; class=&#34;gallery-item&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;标记复制算法将内存区域一分为二，其中对象主要分配在其中的一个区域内，当其中一个区域内存已满时，便会启动GC程序，将该区域内存活的对象复制到另一个区域内，然后直接清理已满的内存区域。&lt;/p&gt;
 &lt;p&gt;标记复制算法不容易造成内存碎片，但是当内存中存活对象较多时，复制的成本也骤然上升，如果建立在Week Generation Hypothesis的基础之上（即对象的朝生夕死行为），标记复制算法能够很好的进行内存管理。&lt;/p&gt;
-&lt;p&gt;初次之外，标记复制算法的一大缺点是内存利用率不高，从图中可以看出，将内存区域一分为二，实际使用的内存只有一部分，这也会造成较高频率的执行GC。不过可以通过调整内存区域划分的比例（非1:1的划分内存区域）对算法进行改善。&lt;/p&gt;
+&lt;p&gt;除此之外，标记复制算法的一大缺点是内存利用率不高，从图中可以看出，将内存区域一分为二，实际使用的内存只有一部分，这也会造成较高频率的执行GC。不过可以通过调整内存区域划分的比例（非1:1的划分内存区域）对算法进行改善。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;IBM公司曾有一项专门研究对新生代“朝生夕灭”的特点做了更量化的诠释——新生代中的对象有98%熬不过第一轮收集。因此并不需要按照1∶1的比例来划分新生代的内存空间&lt;/p&gt;
 &lt;/blockquote&gt;

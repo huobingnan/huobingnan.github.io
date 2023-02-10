@@ -8,9 +8,9 @@
         <pubDate>Sun, 29 Jan 2023 00:00:00 +0800</pubDate>
         <lastBuildDate>Sun, 29 Jan 2023 00:00:00 +0800</lastBuildDate>
         <category>Java</category>
+        <category>Garbage Collection</category>
         <category>OS</category>
         <category>Concurrency</category>
-        <category>Garbage Collection</category>
         <category>Maven</category>
         <item>
             <guid isPermalink="true">https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/</guid>
