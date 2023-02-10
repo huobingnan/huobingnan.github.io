@@ -10,6 +10,7 @@
         <category>Java</category>
         <category>OS</category>
         <category>Concurrency</category>
+        <category>Garbage Collection</category>
         <category>Maven</category>
         <item>
             <guid isPermalink="true">https://huobingnan.github.io/2020/02/25/Introduction%20to%20Concurrency/</guid>

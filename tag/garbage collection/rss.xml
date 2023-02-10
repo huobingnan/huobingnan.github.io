@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Bryan&#39;s Blog • Posts by &#34;garbage collection&#34; tag</title>
+        <link>https://huobingnan.github.io</link>
+        <description>Miracles happen everday</description>
+        <language>zh-CN</language>
+        <pubDate>Thu, 20 Jan 2022 00:00:00 +0800</pubDate>
+        <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0800</lastBuildDate>
+        <category>Java</category>
+        <category>OS</category>
+        <category>Concurrency</category>
+        <category>Garbage Collection</category>
+        <category>Maven</category>
+        <item>
+            <guid isPermalink="true">https://huobingnan.github.io/2022/01/20/Java%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95/</guid>
+            <title>Java分代垃圾回收算法</title>
+            <link>https://huobingnan.github.io/2022/01/20/Java%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95/</link>
+            <category>Java</category>
+            <category>Garbage Collection</category>
+            <pubDate>Thu, 20 Jan 2022 00:00:00 +0800</pubDate>
+            <description><![CDATA[ &lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css&#34; /&gt;&lt;div class=&#34;.article-gallery&#34;&gt;&lt;h2 id=&#34;1-分代回收算法&#34;&gt;&lt;a href=&#34;#1-分代回收算法&#34; class=&#34;headerlink&#34; title=&#34;1. 分代回收算法&#34;&gt;&lt;/a&gt;1. 分代回收算法&lt;/h2&gt;&lt;hr&gt;
+&lt;p&gt;分代回收算法是将JVM堆内存区域进行划分，主要划分为”新生代“和”老年代“。其中新创建的对象在新生代堆内存中分配存储空间，而当对象在新生代中经历数次垃圾回收（Garbage Collection，GC）后依然没有被清理，那么这个对象将会被转移至老年代堆内存中。&lt;/p&gt;
+&lt;p&gt;分代回收算法将内存分区域划分，可以针对不同内存区域中对象的生命周期特点选择合适的垃圾回收算法，进而能够保障垃圾回收算法的低消耗和高效率。&lt;/p&gt;
+&lt;p&gt;同时内存区域分代划分之后，JVM的GC行为也可以进行细粒度的划分——“Minor GC”，“Major GC”和“Full GC”。&lt;/p&gt;
+&lt;p&gt;不过分代回收算法的理想化模型是建立在三个基础假说之上，这三个基础假说是分代回收算法在实现上的主要依据。&lt;/p&gt;
+&lt;h2 id=&#34;2-分代回收的算法的三个基础假说&#34;&gt;&lt;a href=&#34;#2-分代回收的算法的三个基础假说&#34; class=&#34;headerlink&#34; title=&#34;2. 分代回收的算法的三个基础假说&#34;&gt;&lt;/a&gt;2. 分代回收的算法的三个基础假说&lt;/h2&gt;&lt;hr&gt;
+&lt;ol&gt;
+&lt;li&gt;Weak Generation Hypothesis（弱分代假说）：对象在创建并被使用之后，即完成了自己的历史使命，可以从内存中被清理。意在说明JVM中大部分对象朝生夕死的一个特征。&lt;/li&gt;
+&lt;li&gt;Strong Generation Hypothesis（强分代假说）：如果一个对象经历了数次垃圾回收之后依然被引用，那么它在以后的垃圾回收中也很难消亡。&lt;/li&gt;
+&lt;li&gt;Intergenerational Reference Hypothesis（跨代引用假说）：在JVM内存区域中，存在跨代引用的对象占据极少数部分。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;3-常见分代GC算法&#34;&gt;&lt;a href=&#34;#3-常见分代GC算法&#34; class=&#34;headerlink&#34; title=&#34;3. 常见分代GC算法&#34;&gt;&lt;/a&gt;3. 常见分代GC算法&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&#34;3-1-标记清除（Mark-Sweep）&#34;&gt;&lt;a href=&#34;#3-1-标记清除（Mark-Sweep）&#34; class=&#34;headerlink&#34; title=&#34;3.1  标记清除（Mark-Sweep）&#34;&gt;&lt;/a&gt;3.1  标记清除（Mark-Sweep）&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.png&#34; class=&#34;gallery-item&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4%E7%AE%97%E6%B3%95.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;标记清除算法是一个比较简单易于实现的GC算法。它的主要思路是：标记内存区域中已经消亡的对象和存活的对象，然后在GC时直接清理掉消亡的对象。&lt;/p&gt;
+&lt;p&gt;这种算法实现起来比较简单，GC算法执行时的消耗也比较小，但是容易造成碎片化的空间。&lt;/p&gt;
+&lt;h3 id=&#34;3-2-标记复制（Mark-Copy）&#34;&gt;&lt;a href=&#34;#3-2-标记复制（Mark-Copy）&#34; class=&#34;headerlink&#34; title=&#34;3.2 标记复制（Mark-Copy）&#34;&gt;&lt;/a&gt;3.2 标记复制（Mark-Copy）&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.png&#34; class=&#34;gallery-item&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;标记复制算法将内存区域一分为二，其中对象主要分配在其中的一个区域内，当其中一个区域内存已满时，便会启动GC程序，将该区域内存活的对象复制到另一个区域内，然后直接清理已满的内存区域。&lt;/p&gt;
+&lt;p&gt;标记复制算法不容易造成内存碎片，但是当内存中存活对象较多时，复制的成本也骤然上升，如果建立在Week Generation Hypothesis的基础之上（即对象的朝生夕死行为），标记复制算法能够很好的进行内存管理。&lt;/p&gt;
+&lt;p&gt;初次之外，标记复制算法的一大缺点是内存利用率不高，从图中可以看出，将内存区域一分为二，实际使用的内存只有一部分，这也会造成较高频率的执行GC。不过可以通过调整内存区域划分的比例（非1:1的划分内存区域）对算法进行改善。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;IBM公司曾有一项专门研究对新生代“朝生夕灭”的特点做了更量化的诠释——新生代中的对象有98%熬不过第一轮收集。因此并不需要按照1∶1的比例来划分新生代的内存空间&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这种算法通常应用于JVM堆内存的新生代。&lt;/p&gt;
+&lt;h3 id=&#34;3-3-标记整理（Mark-Compact）&#34;&gt;&lt;a href=&#34;#3-3-标记整理（Mark-Compact）&#34; class=&#34;headerlink&#34; title=&#34;3.3 标记整理（Mark-Compact）&#34;&gt;&lt;/a&gt;3.3 标记整理（Mark-Compact）&lt;/h3&gt;&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95.png&#34; class=&#34;gallery-item&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230210%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86%E7%AE%97%E6%B3%95.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;标记整理算法的做法是将所有存活对象统统移动到内存空间的一侧，然后将内存区域的另一侧全部清理掉。这样做可以减少内存碎片的存在，但是可以看出开销是十分大的，这种算法通常应用于JVM堆内存的老年代中。&lt;/p&gt;
+&lt;/div&gt;&lt;script src=&#34;https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js&#34;&gt;&lt;/script&gt;&lt;script&gt;if (typeof lightGallery !== &#39;undefined&#39;) {
+        var options = {
+            selector: &#39;.gallery-item&#39;
+        };
+        lightGallery(document.getElementsByClassName(&#39;.article-gallery&#39;)[0], options);
+        }&lt;/script&gt; ]]></description>
+        </item>
+    </channel>
+</rss>
