@@ -5,10 +5,11 @@
     <link href="https://huobingnan.github.io" />
     <updated>2020-02-24T16:00:00.000Z</updated>
     <category term="Java" />
-    <category term="Garbage Collection" />
     <category term="OS" />
     <category term="Concurrency" />
+    <category term="Garbage Collection" />
     <category term="Maven" />
+    <category term="组成原理" />
     <entry>
         <id>https://huobingnan.github.io/2020/02/25/Introduction%20to%20Concurrency/</id>
         <title>Introduction to Concurrency</title>
