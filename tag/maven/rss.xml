@@ -12,9 +12,9 @@
         <category>Java</category>
         <category>设计模式</category>
         <category>Garbage Collection</category>
+        <category>Algorithm</category>
         <category>Maven</category>
         <category>组成原理</category>
-        <category>Algorithm</category>
         <item>
             <guid isPermalink="true">https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/</guid>
             <title>Maven Assembly Plugin</title>
