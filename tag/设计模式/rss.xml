@@ -7,11 +7,11 @@
         <language>zh-CN</language>
         <pubDate>Fri, 10 Feb 2023 00:00:00 +0800</pubDate>
         <lastBuildDate>Fri, 10 Feb 2023 00:00:00 +0800</lastBuildDate>
-        <category>OS</category>
-        <category>Concurrency</category>
         <category>Java</category>
         <category>Garbage Collection</category>
         <category>设计模式</category>
+        <category>OS</category>
+        <category>Concurrency</category>
         <category>Maven</category>
         <category>组成原理</category>
         <item>
@@ -69,7 +69,7 @@
     &lt;span class=&#34;hljs-keyword&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;hljs-keyword&#34;&gt;static&lt;/span&gt; LazyV2 &lt;span class=&#34;hljs-title function_&#34;&gt;getInstance&lt;/span&gt;&lt;span class=&#34;hljs-params&#34;&gt;()&lt;/span&gt; { &lt;span class=&#34;hljs-keyword&#34;&gt;return&lt;/span&gt; Holder.INSTANCE; }  
 }&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;这种实现方式会比双重检查锁的实现方式简洁，并且JDK中也多采用这种方式。JDK中较为常见的&lt;em&gt;Math#random&lt;/em&gt;方法，就是采用了内部类的方式，创建了一个&lt;em&gt;Random&lt;/em&gt;类的单例。从JDK代码设计中可以看到，饿汉式单例是较为推荐的单例创建方式。&lt;/p&gt;
+&lt;p&gt;这种实现方式会比双重检查锁的实现方式简洁，并且JDK中也多采用这种方式。JDK中较为常见的&lt;em&gt;Math#random&lt;/em&gt;方法，就是采用了内部类的方式，创建了一个&lt;em&gt;Random&lt;/em&gt;类的单例。从JDK代码设计中可以看到，懒汉式单例是较为推荐的单例创建方式。&lt;/p&gt;
 &lt;pre&gt;&lt;div class=&#34;caption&#34;&gt;&lt;span&gt;java.lang.Math$RandomNumberGeneratorHolder&lt;/span&gt;&lt;/div&gt;&lt;code class=&#34;hljs java&#34;&gt;&lt;span class=&#34;hljs-keyword&#34;&gt;private&lt;/span&gt; &lt;span class=&#34;hljs-keyword&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;hljs-keyword&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;hljs-keyword&#34;&gt;class&lt;/span&gt; &lt;span class=&#34;hljs-title class_&#34;&gt;RandomNumberGeneratorHolder&lt;/span&gt; {  
     &lt;span class=&#34;hljs-keyword&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;hljs-keyword&#34;&gt;final&lt;/span&gt; &lt;span class=&#34;hljs-type&#34;&gt;Random&lt;/span&gt; &lt;span class=&#34;hljs-variable&#34;&gt;randomNumberGenerator&lt;/span&gt; &lt;span class=&#34;hljs-operator&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;hljs-keyword&#34;&gt;new&lt;/span&gt; &lt;span class=&#34;hljs-title class_&#34;&gt;Random&lt;/span&gt;();  
 }&lt;/code&gt;&lt;/pre&gt;

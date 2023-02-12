@@ -7,11 +7,11 @@
         <language>zh-CN</language>
         <pubDate>Thu, 20 Jan 2022 00:00:00 +0800</pubDate>
         <lastBuildDate>Thu, 20 Jan 2022 00:00:00 +0800</lastBuildDate>
-        <category>OS</category>
-        <category>Concurrency</category>
         <category>Java</category>
         <category>Garbage Collection</category>
         <category>设计模式</category>
+        <category>OS</category>
+        <category>Concurrency</category>
         <category>Maven</category>
         <category>组成原理</category>
         <item>

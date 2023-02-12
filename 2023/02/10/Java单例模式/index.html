@@ -14,7 +14,7 @@
 <meta property="og:description" content="0. Preface    “茴香豆的茴有几种写法呢？”  单例模式是设计模式的一种，在Java中，配合Java语言特性和JVM的机制可以有多种实现方式。就好比在写“茴香豆”的“茴”字，每种实现各有利弊，简言之，单例模式是为了让大对象的创建得以缓存和复用。复用是一种最为常见的，也是在Java语言中优化内存的最好方式。  1. 饿汉式    饿汉式是Java中单例模式实现中最简单的一种方式，其实现代">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-12T02:38:48.915Z">
+<meta property="article:modified_time" content="2023-02-12T02:40:08.655Z">
 <meta property="article:author" content="Bryan Huo">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="设计模式">
@@ -267,7 +267,7 @@ mjx-container[display="true"] + br {
     <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> LazyV2 <span class="hljs-title function_">getInstance</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> Holder.INSTANCE; }  
 }</code></pre>
 
-<p>这种实现方式会比双重检查锁的实现方式简洁，并且JDK中也多采用这种方式。JDK中较为常见的<em>Math#random</em>方法，就是采用了内部类的方式，创建了一个<em>Random</em>类的单例。从JDK代码设计中可以看到，饿汉式单例是较为推荐的单例创建方式。</p>
+<p>这种实现方式会比双重检查锁的实现方式简洁，并且JDK中也多采用这种方式。JDK中较为常见的<em>Math#random</em>方法，就是采用了内部类的方式，创建了一个<em>Random</em>类的单例。从JDK代码设计中可以看到，懒汉式单例是较为推荐的单例创建方式。</p>
 <pre><div class="caption"><span>java.lang.Math$RandomNumberGeneratorHolder</span></div><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RandomNumberGeneratorHolder</span> {  
     <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Random</span> <span class="hljs-variable">randomNumberGenerator</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();  
 }</code></pre>
@@ -287,7 +287,7 @@ mjx-container[display="true"] + br {
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://huobingnan.github.io/2023/02/10/Java%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" data-id="cle0s2pnh0006vb8h5vru67pe" data-title="Java单例模式" class="article-share-link">分享</a>
+      <a data-url="https://huobingnan.github.io/2023/02/10/Java%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" data-id="cle0s46pp0005068h10tw0khy" data-title="Java单例模式" class="article-share-link">分享</a>
       
       
       
