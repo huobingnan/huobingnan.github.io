@@ -242,163 +242,34 @@ mjx-container[display="true"] + br {
 <p><code>ApplicationClassLoader</code>也称应用程序加载器是指 Sun公司实现的<code>sun.misc.Launcher$AppClassLoader</code>。它负责加载系统类路径<code>java -classpath</code>或<code>-D java.class.path</code> 指定路径下的类库，也就是我们经常用到的classpath路径，开发者可以直接使用系统类加载器，一般情况下该类加载是程序中<strong>默认的类加载器</strong>，通过<code>ClassLoader#getSystemClassLoader()</code>方法可以获取到该类加载器。</p>
 <h2 id="3-双亲委派机制"><a href="#3-双亲委派机制" class="headerlink" title="3. 双亲委派机制"></a>3. 双亲委派机制</h2><hr>
 <p>双亲委派机制是指，当一个<code>ClassLoader</code>尝试加载一个类时，它并不会自己加载，而是将加载任务向上委托给父加载器加载。每个<code>ClassLoader</code>中都有一个<code>parent</code>属性，用来保存父加载器的引用。注意：父加载器并不是父类加载器，它们之间没有类之间的继承关系。双亲委派机制的加载流程为：在类加载器缓存中查询，此类是否已经加载，若已加载，则直接由此加载器加载，若没有则向上委托给父加载器加载。若最上层父加载器也未加载，则向下委托给子加载器加载。</p>
-<pre><div class="caption"><span>ClassLoader加载类的流程</span></div><code class="hljs java"><span class="hljs-keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="hljs-type">boolean</span> resolve)
-        <span class="hljs-keyword">throws</span> ClassNotFoundException {
-        
-  <span class="hljs-keyword">synchronized</span> (getClassLoadingLock(name)) {
-    <span class="hljs-comment">// 首先检查类是否已经加载过</span>
-    Class&lt;?&gt; c = findLoadedClass(name);
-    <span class="hljs-keyword">if</span> (c == <span class="hljs-literal">null</span>) {
-      <span class="hljs-comment">// 没有加载过，则委托父加载器加载</span>
-      <span class="hljs-type">long</span> <span class="hljs-variable">t0</span> <span class="hljs-operator">=</span> System.nanoTime();
-      <span class="hljs-keyword">try</span> {
-        <span class="hljs-keyword">if</span> (parent != <span class="hljs-literal">null</span>) {
-          <span class="hljs-comment">// 若有父加载器，则委托父加载加载</span>
-          c = parent.loadClass(name, <span class="hljs-literal">false</span>);
-        } <span class="hljs-keyword">else</span> {
-          <span class="hljs-comment">// 若没有父加载器（最上层父加载器也未加载此类），则委托BootStrap加载器加载</span>
-          c = findBootstrapClassOrNull(name);
-        }
-      } <span class="hljs-keyword">catch</span> (ClassNotFoundException e) {
-        <span class="hljs-comment">// ClassNotFoundException thrown if class not found</span>
-        <span class="hljs-comment">// from the non-null parent class loader</span>
-      }
-
-      <span class="hljs-keyword">if</span> (c == <span class="hljs-literal">null</span>) {
-        <span class="hljs-comment">// If still not found, then invoke findClass in order</span>
-        <span class="hljs-comment">// to find the class.</span>
-        <span class="hljs-comment">// 这种情况代表Bootstrap加载器也未加载此类，则委托给本加载器加载。</span>
-        <span class="hljs-type">long</span> <span class="hljs-variable">t1</span> <span class="hljs-operator">=</span> System.nanoTime();
-        c = findClass(name);
-        <span class="hljs-comment">// this is the defining class loader; record the stats</span>
-        PerfCounter.getParentDelegationTime().addTime(t1 - t0);
-        PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
-        PerfCounter.getFindClasses().increment();
-      }
-    }
-    <span class="hljs-keyword">if</span> (resolve) {
-      resolveClass(c);
-    }
-    <span class="hljs-keyword">return</span> c;
-  }</code></pre>
+<figure class="highlight java"><figcaption><span>ClassLoader加载类的流程</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="hljs-type">boolean</span> resolve)<br>        <span class="hljs-keyword">throws</span> ClassNotFoundException {<br>        <br>  <span class="hljs-keyword">synchronized</span> (getClassLoadingLock(name)) {<br>    <span class="hljs-comment">// 首先检查类是否已经加载过</span><br>    Class&lt;?&gt; c = findLoadedClass(name);<br>    <span class="hljs-keyword">if</span> (c == <span class="hljs-literal">null</span>) {<br>      <span class="hljs-comment">// 没有加载过，则委托父加载器加载</span><br>      <span class="hljs-type">long</span> <span class="hljs-variable">t0</span> <span class="hljs-operator">=</span> System.nanoTime();<br>      <span class="hljs-keyword">try</span> {<br>        <span class="hljs-keyword">if</span> (parent != <span class="hljs-literal">null</span>) {<br>          <span class="hljs-comment">// 若有父加载器，则委托父加载加载</span><br>          c = parent.loadClass(name, <span class="hljs-literal">false</span>);<br>        } <span class="hljs-keyword">else</span> {<br>          <span class="hljs-comment">// 若没有父加载器（最上层父加载器也未加载此类），则委托BootStrap加载器加载</span><br>          c = findBootstrapClassOrNull(name);<br>        }<br>      } <span class="hljs-keyword">catch</span> (ClassNotFoundException e) {<br>        <span class="hljs-comment">// ClassNotFoundException thrown if class not found</span><br>        <span class="hljs-comment">// from the non-null parent class loader</span><br>      }<br><br>      <span class="hljs-keyword">if</span> (c == <span class="hljs-literal">null</span>) {<br>        <span class="hljs-comment">// If still not found, then invoke findClass in order</span><br>        <span class="hljs-comment">// to find the class.</span><br>        <span class="hljs-comment">// 这种情况代表Bootstrap加载器也未加载此类，则委托给本加载器加载。</span><br>        <span class="hljs-type">long</span> <span class="hljs-variable">t1</span> <span class="hljs-operator">=</span> System.nanoTime();<br>        c = findClass(name);<br>        <span class="hljs-comment">// this is the defining class loader; record the stats</span><br>        PerfCounter.getParentDelegationTime().addTime(t1 - t0);<br>        PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);<br>        PerfCounter.getFindClasses().increment();<br>      }<br>    }<br>    <span class="hljs-keyword">if</span> (resolve) {<br>      resolveClass(c);<br>    }<br>    <span class="hljs-keyword">return</span> c;<br>  }<br></code></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230209%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230209%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6.png"></a></p>
 <h3 id="3-1-测试双亲委派机制"><a href="#3-1-测试双亲委派机制" class="headerlink" title="3.1 测试双亲委派机制"></a>3.1 测试双亲委派机制</h3><p>新建一个测试用的类</p>
-<pre><div class="caption"><span>双亲委派机制的测试类</span></div><code class="hljs java"><span class="hljs-keyword">package</span> misc;
-
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Model</span> {
-    <span class="hljs-keyword">static</span> {
-        System.out.println(<span class="hljs-string">"类被加载了"</span>);
-    }
-
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sayHello</span><span class="hljs-params">()</span> {
-        System.out.println(<span class="hljs-string">"hello"</span>);
-    }
-}</code></pre>
+<figure class="highlight java"><figcaption><span>双亲委派机制的测试类</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> misc;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Model</span> {<br>    <span class="hljs-keyword">static</span> {<br>        System.out.println(<span class="hljs-string">"类被加载了"</span>);<br>    }<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sayHello</span><span class="hljs-params">()</span> {<br>        System.out.println(<span class="hljs-string">"hello"</span>);<br>    }<br>}<br></code></pre></td></tr></table></figure>
 
 <p>自己定义一个类加载器</p>
-<pre><div class="caption"><span>自定义类加载器</span></div><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClassLoader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ClassLoader</span> {
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String classPath;
-
-    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyClassLoader</span><span class="hljs-params">(String classPath)</span> {
-        <span class="hljs-built_in">this</span>.classPath = classPath;
-    }
-
-    <span class="hljs-meta">@Override</span>
-    <span class="hljs-keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="hljs-keyword">throws</span> ClassNotFoundException {
-      	<span class="hljs-comment">// 如果使用MyClassLoader加载，那么这句话将会输出至控制台</span>
-        System.out.println(<span class="hljs-string">"使用MyClassLoader加载"</span>);
-        <span class="hljs-type">var</span> <span class="hljs-variable">classFilePath</span> <span class="hljs-operator">=</span> classPath + <span class="hljs-string">"/"</span> + name.replace(<span class="hljs-string">"."</span>,<span class="hljs-string">"/"</span>).concat(<span class="hljs-string">".class"</span>);
-        <span class="hljs-type">var</span> <span class="hljs-variable">bao</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();
-        <span class="hljs-type">var</span> <span class="hljs-variable">readByte</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">try</span> {
-            <span class="hljs-type">var</span> <span class="hljs-variable">fis</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(classFilePath);
-            <span class="hljs-keyword">while</span> ((readByte = fis.read()) != -<span class="hljs-number">1</span>)
-            {
-                bao.write(readByte);
-            }
-            <span class="hljs-type">var</span> <span class="hljs-variable">bytesArray</span> <span class="hljs-operator">=</span> bao.toByteArray();
-            <span class="hljs-keyword">return</span> defineClass(name, bytesArray, <span class="hljs-number">0</span>, bytesArray.length);
-        } <span class="hljs-keyword">catch</span> (IOException ex) {
-            ex.printStackTrace();
-            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassNotFoundException</span>(ex.getMessage());
-        }
-    }
-}</code></pre>
+<figure class="highlight java"><figcaption><span>自定义类加载器</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClassLoader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ClassLoader</span> {<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String classPath;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyClassLoader</span><span class="hljs-params">(String classPath)</span> {<br>        <span class="hljs-built_in">this</span>.classPath = classPath;<br>    }<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="hljs-keyword">throws</span> ClassNotFoundException {<br>      	<span class="hljs-comment">// 如果使用MyClassLoader加载，那么这句话将会输出至控制台</span><br>        System.out.println(<span class="hljs-string">"使用MyClassLoader加载"</span>);<br>        <span class="hljs-type">var</span> <span class="hljs-variable">classFilePath</span> <span class="hljs-operator">=</span> classPath + <span class="hljs-string">"/"</span> + name.replace(<span class="hljs-string">"."</span>,<span class="hljs-string">"/"</span>).concat(<span class="hljs-string">".class"</span>);<br>        <span class="hljs-type">var</span> <span class="hljs-variable">bao</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br>        <span class="hljs-type">var</span> <span class="hljs-variable">readByte</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">try</span> {<br>            <span class="hljs-type">var</span> <span class="hljs-variable">fis</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(classFilePath);<br>            <span class="hljs-keyword">while</span> ((readByte = fis.read()) != -<span class="hljs-number">1</span>)<br>            {<br>                bao.write(readByte);<br>            }<br>            <span class="hljs-type">var</span> <span class="hljs-variable">bytesArray</span> <span class="hljs-operator">=</span> bao.toByteArray();<br>            <span class="hljs-keyword">return</span> defineClass(name, bytesArray, <span class="hljs-number">0</span>, bytesArray.length);<br>        } <span class="hljs-keyword">catch</span> (IOException ex) {<br>            ex.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassNotFoundException</span>(ex.getMessage());<br>        }<br>    }<br>}<br></code></pre></td></tr></table></figure>
 
 
-  <pre><div class="caption"><span>测试双亲委派机制</span></div><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">loadClassViaMyClassLoader</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {
-    <span class="hljs-type">var</span> <span class="hljs-variable">classLoader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClassLoader</span>(<span class="hljs-string">"/Users/huobingnan/code/java/misc/out/production/misc"</span>);
-    <span class="hljs-type">var</span> <span class="hljs-variable">modelClass</span> <span class="hljs-operator">=</span> classLoader.loadClass(<span class="hljs-string">"misc.Model"</span>);
-  	System.out.println(<span class="hljs-string">"Model的类加载器是："</span> + modelClass.getClassLoader());
-    <span class="hljs-type">var</span> <span class="hljs-variable">sayHelloMethod</span> <span class="hljs-operator">=</span> modelClass.getDeclaredMethod(<span class="hljs-string">"sayHello"</span>);
-    sayHelloMethod.invoke(<span class="hljs-literal">null</span>);
-}</code></pre>
+  <figure class="highlight java"><figcaption><span>测试双亲委派机制</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">loadClassViaMyClassLoader</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {<br>    <span class="hljs-type">var</span> <span class="hljs-variable">classLoader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClassLoader</span>(<span class="hljs-string">"/Users/huobingnan/code/java/misc/out/production/misc"</span>);<br>    <span class="hljs-type">var</span> <span class="hljs-variable">modelClass</span> <span class="hljs-operator">=</span> classLoader.loadClass(<span class="hljs-string">"misc.Model"</span>);<br>  	System.out.println(<span class="hljs-string">"Model的类加载器是："</span> + modelClass.getClassLoader());<br>    <span class="hljs-type">var</span> <span class="hljs-variable">sayHelloMethod</span> <span class="hljs-operator">=</span> modelClass.getDeclaredMethod(<span class="hljs-string">"sayHello"</span>);<br>    sayHelloMethod.invoke(<span class="hljs-literal">null</span>);<br>}<br></code></pre></td></tr></table></figure>
 
 <p>测试输出</p>
-<pre><div class="caption"><span>测试代码输出</span></div><code class="hljs shell">Model的类加载器是：jdk.internal.loader.ClassLoaders$AppClassLoader@7c53a9eb
-类被加载了
-hello</code></pre>
+<figure class="highlight shell"><figcaption><span>测试代码输出</span></figcaption><table><tr><td class="code"><pre><code class="hljs shell">Model的类加载器是：jdk.internal.loader.ClassLoaders$AppClassLoader@7c53a9eb<br>类被加载了<br>hello<br></code></pre></td></tr></table></figure>
 
 <p>  通过输出可以发现，Model类的加载并未使用我们自定义的<code>MyClassLoader</code>，而是使用了JDK中的应用程序类加载器，这就是双亲委派机制的体现，你也可以对上述代码进行DEBUG运行，从中便可得知类加载的途径是</p>
 <p>  <code>MyClassLoader -&gt; AppClassLoader -&gt; PlatformClassLoader -&gt; BootstrapClassLoader -&gt; PlatformClassLoader -&gt; AppClassLoader</code> 。注意：不同的JDK可能加载器的名称会有所不同，笔者这里使用的是zulu-jdk-arm64。</p>
 <h3 id="3-2-打破双亲委派机制"><a href="#3-2-打破双亲委派机制" class="headerlink" title="3.2 打破双亲委派机制"></a>3.2 打破双亲委派机制</h3><p>通过上文的测试用例可以得知，尽管我们自定义了ClassLoader，但是由于双亲委派机制的存在，字节码文件没有使用我们自定义的ClassLoader加载。那么如何强制字节码文件使特定ClassLoader加载呢？我们可以通过重写<code>CLassLoader.loadClass(String name, boolean resovle)</code>方法进行。例如下面的代码：</p>
-<pre><div class="caption"><span>尝试打破双亲委派机制</span></div><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClassLoader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ClassLoader</span> {
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String classPath;
-
-    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyClassLoader</span><span class="hljs-params">(String classPath)</span> {
-        <span class="hljs-built_in">this</span>.classPath = classPath;
-    }
-
-    <span class="hljs-meta">@Override</span>
-    <span class="hljs-keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="hljs-type">boolean</span> resolve) <span class="hljs-keyword">throws</span> ClassNotFoundException {
-        <span class="hljs-keyword">if</span> (name.startsWith(<span class="hljs-string">"misc"</span>)) {
-          	<span class="hljs-comment">// 如果包名以misc开头，我们使用MyClassLoader加载</span>
-            <span class="hljs-keyword">return</span> findClass(name); 
-        }
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.loadClass(name, resolve);
-    }
-
-    <span class="hljs-meta">@Override</span>
-    <span class="hljs-keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="hljs-keyword">throws</span> ClassNotFoundException {
-        System.out.println(<span class="hljs-string">"使用MyClassLoader加载"</span>);
-        <span class="hljs-type">var</span> <span class="hljs-variable">classFilePath</span> <span class="hljs-operator">=</span> classPath + <span class="hljs-string">"/"</span> + name.replace(<span class="hljs-string">"."</span>, <span class="hljs-string">"/"</span>).concat(<span class="hljs-string">".class"</span>);
-        <span class="hljs-type">var</span> <span class="hljs-variable">bao</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();
-        <span class="hljs-type">var</span> <span class="hljs-variable">readByte</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">try</span> {
-            <span class="hljs-type">var</span> <span class="hljs-variable">fis</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(classFilePath);
-            <span class="hljs-keyword">while</span> ((readByte = fis.read()) != -<span class="hljs-number">1</span>) {
-                bao.write(readByte);
-            }
-            <span class="hljs-type">var</span> <span class="hljs-variable">bytesArray</span> <span class="hljs-operator">=</span> bao.toByteArray();
-            <span class="hljs-keyword">return</span> defineClass(name, bytesArray, <span class="hljs-number">0</span>, bytesArray.length);
-        } <span class="hljs-keyword">catch</span> (IOException ex) {
-            ex.printStackTrace();
-            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassNotFoundException</span>(ex.getMessage());
-        }
-    }
-}</code></pre>
+<figure class="highlight java"><figcaption><span>尝试打破双亲委派机制</span></figcaption><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyClassLoader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ClassLoader</span> {<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String classPath;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyClassLoader</span><span class="hljs-params">(String classPath)</span> {<br>        <span class="hljs-built_in">this</span>.classPath = classPath;<br>    }<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="hljs-type">boolean</span> resolve) <span class="hljs-keyword">throws</span> ClassNotFoundException {<br>        <span class="hljs-keyword">if</span> (name.startsWith(<span class="hljs-string">"misc"</span>)) {<br>          	<span class="hljs-comment">// 如果包名以misc开头，我们使用MyClassLoader加载</span><br>            <span class="hljs-keyword">return</span> findClass(name); <br>        }<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.loadClass(name, resolve);<br>    }<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="hljs-keyword">throws</span> ClassNotFoundException {<br>        System.out.println(<span class="hljs-string">"使用MyClassLoader加载"</span>);<br>        <span class="hljs-type">var</span> <span class="hljs-variable">classFilePath</span> <span class="hljs-operator">=</span> classPath + <span class="hljs-string">"/"</span> + name.replace(<span class="hljs-string">"."</span>, <span class="hljs-string">"/"</span>).concat(<span class="hljs-string">".class"</span>);<br>        <span class="hljs-type">var</span> <span class="hljs-variable">bao</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayOutputStream</span>();<br>        <span class="hljs-type">var</span> <span class="hljs-variable">readByte</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">try</span> {<br>            <span class="hljs-type">var</span> <span class="hljs-variable">fis</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(classFilePath);<br>            <span class="hljs-keyword">while</span> ((readByte = fis.read()) != -<span class="hljs-number">1</span>) {<br>                bao.write(readByte);<br>            }<br>            <span class="hljs-type">var</span> <span class="hljs-variable">bytesArray</span> <span class="hljs-operator">=</span> bao.toByteArray();<br>            <span class="hljs-keyword">return</span> defineClass(name, bytesArray, <span class="hljs-number">0</span>, bytesArray.length);<br>        } <span class="hljs-keyword">catch</span> (IOException ex) {<br>            ex.printStackTrace();<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassNotFoundException</span>(ex.getMessage());<br>        }<br>    }<br>}<br></code></pre></td></tr></table></figure>
 
 <p>更改之后，再次使用上文中的测试代码进行测试：</p>
-<pre><div class="caption"><span>打破双亲委派机制的类加载输出</span></div><code class="hljs shell">使用MyClassLoader加载
-Model的类加载器是：misc.MyClassLoader@d041cf
-类被加载了
-hello</code></pre>
+<figure class="highlight shell"><figcaption><span>打破双亲委派机制的类加载输出</span></figcaption><table><tr><td class="code"><pre><code class="hljs shell">使用MyClassLoader加载<br>Model的类加载器是：misc.MyClassLoader@d041cf<br>类被加载了<br>hello<br></code></pre></td></tr></table></figure>
 
 <p>这里可以看到，通过重写<code>loadClass</code>方法，我们可以自定义类加载行为，打破双亲委派机制。</p>
 <h3 id="3-3-打破双亲委派带来的问题"><a href="#3-3-打破双亲委派带来的问题" class="headerlink" title="3.3 打破双亲委派带来的问题"></a>3.3 打破双亲委派带来的问题</h3><p>虽然我们自定义了类加载，并且打破了双亲委派机制，使得我们可以自定义类加载器加载类的行为。但是打破双亲委派机制后会带一个问题：</p>
-<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testClassLoaderCastBehavior</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {
-  <span class="hljs-type">var</span> <span class="hljs-variable">classLoader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClassLoader</span>(<span class="hljs-string">"/Users/huobingnan/code/java/misc/lib"</span>);
-  <span class="hljs-type">var</span> <span class="hljs-variable">modelClass</span> <span class="hljs-operator">=</span> classLoader.loadClass(<span class="hljs-string">"misc.Model"</span>);
-  <span class="hljs-type">var</span> <span class="hljs-variable">object</span> <span class="hljs-operator">=</span> modelClass.getConstructor().newInstance();
-  <span class="hljs-type">var</span> <span class="hljs-variable">model</span> <span class="hljs-operator">=</span> (Model)object;
-}</code></pre>
+<figure class="highlight java"><table><tr><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testClassLoaderCastBehavior</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {<br>  <span class="hljs-type">var</span> <span class="hljs-variable">classLoader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClassLoader</span>(<span class="hljs-string">"/Users/huobingnan/code/java/misc/lib"</span>);<br>  <span class="hljs-type">var</span> <span class="hljs-variable">modelClass</span> <span class="hljs-operator">=</span> classLoader.loadClass(<span class="hljs-string">"misc.Model"</span>);<br>  <span class="hljs-type">var</span> <span class="hljs-variable">object</span> <span class="hljs-operator">=</span> modelClass.getConstructor().newInstance();<br>  <span class="hljs-type">var</span> <span class="hljs-variable">model</span> <span class="hljs-operator">=</span> (Model)object;<br>}<br></code></pre></td></tr></table></figure>
 
-<pre><code class="hljs shell">使用MyClassLoader加载
-类被加载了
-Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot be cast to class misc.Model (misc.Model is in unnamed module of loader misc.MyClassLoader @d041cf; misc.Model is in unnamed module of loader 'app')
-	at misc.ClassLoaderTest.testClassLoaderCastBehavior(ClassLoaderTest.java:19)
-	at misc.ClassLoaderTest.main(ClassLoaderTest.java:85)</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">使用MyClassLoader加载<br>类被加载了<br>Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot be cast to class misc.Model (misc.Model is in unnamed module of loader misc.MyClassLoader @d041cf; misc.Model is in unnamed module of loader 'app')<br>	at misc.ClassLoaderTest.testClassLoaderCastBehavior(ClassLoaderTest.java:19)<br>	at misc.ClassLoaderTest.main(ClassLoaderTest.java:85)<br></code></pre></td></tr></table></figure>
 
 <p>使用自定义类加载器，在文件系统中加载了一个类，这个类与我们项目类路径中的<code>Model</code>类定义完全一致，但是他们之间并不能进行强制类型转换。这也就是说，虽然我们可以加载这个类，但是在使用的时候只能通过反射的方式进行。我们知道通过反射对一个类进行操作会带来隐患，而且对于用户来说，这样的调用操作并不直观。</p>
 <p>同时，这种行为也限制了我们在项目中保留接口定义的情况下，无法通过类加载器的加载实现类并强制转换使用。</p>
@@ -418,7 +289,7 @@ Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://huobingnan.github.io/2022/03/05/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" data-id="cle0svm9400036b8h9aaxbedh" data-title="Java类加载机制" class="article-share-link">分享</a>
+      <a data-url="https://huobingnan.github.io/2022/03/05/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/" data-id="cle16gv2u0007tj8hed1d9h4v" data-title="Java类加载机制" class="article-share-link">分享</a>
       
       
       
@@ -462,7 +333,7 @@ Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Concurrency/" rel="tag">Concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Garbage-Collection/" rel="tag">Garbage Collection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" rel="tag">组成原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Concurrency/" rel="tag">Concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Garbage-Collection/" rel="tag">Garbage Collection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" rel="tag">组成原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
     </div>
   </div>
 
@@ -472,7 +343,7 @@ Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Concurrency/" style="font-size: 10px;">Concurrency</a> <a href="/tags/Garbage-Collection/" style="font-size: 10px;">Garbage Collection</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OS/" style="font-size: 10px;">OS</a> <a href="/tags/%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 10px;">组成原理</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+      <a href="/tags/Algorithm/" style="font-size: 10px;">Algorithm</a> <a href="/tags/Concurrency/" style="font-size: 10px;">Concurrency</a> <a href="/tags/Garbage-Collection/" style="font-size: 10px;">Garbage Collection</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OS/" style="font-size: 10px;">OS</a> <a href="/tags/%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 10px;">组成原理</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
     </div>
   </div>
 
@@ -494,6 +365,10 @@ Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot
       <ul>
         
           <li>
+            <a href="/2023/02/12/%E5%A4%96%E8%A7%82%E6%95%B0%E5%88%97/">外观数列</a>
+          </li>
+        
+          <li>
             <a href="/2023/02/10/Java%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">Java单例模式</a>
           </li>
         
@@ -507,10 +382,6 @@ Exception in thread "main" java.lang.ClassCastException: class misc.Model cannot
         
           <li>
             <a href="/2022/03/05/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/">Java类加载机制</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/20/Java%E5%88%86%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95/">Java分代垃圾回收算法</a>
           </li>
         
       </ul>
