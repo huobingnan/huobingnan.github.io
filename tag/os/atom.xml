@@ -7,8 +7,9 @@
     <category term="OS" />
     <category term="Concurrency" />
     <category term="Java" />
-    <category term="Maven" />
     <category term="Garbage Collection" />
+    <category term="设计模式" />
+    <category term="Maven" />
     <category term="组成原理" />
     <entry>
         <id>https://huobingnan.github.io/2020/02/25/Introduction%20to%20Concurrency/</id>

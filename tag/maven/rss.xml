@@ -10,8 +10,9 @@
         <category>OS</category>
         <category>Concurrency</category>
         <category>Java</category>
-        <category>Maven</category>
         <category>Garbage Collection</category>
+        <category>设计模式</category>
+        <category>Maven</category>
         <category>组成原理</category>
         <item>
             <guid isPermalink="true">https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/</guid>
