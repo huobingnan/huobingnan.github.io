@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>反转链表有几种转法？ | Bryan&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="0. Preface    开头先说几句记录心情的废话，考研结束后去牛客看了一下各位大佬的面经，感觉恍如隔世。对于一个标准的Java Boy而言，当看到一篇实习岗位的八股文竟然要涉及到JVM底层调优时，不由得一阵心悸。没想到Java的开发岗已经如此之卷，这也坚定了我要写本篇博文的信心。既然要卷，做不了Java Boy们的卷王，那就做Java Boy们的”孔乙己“吧。  本篇依然是”茴香豆“系列，讲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反转链表有几种转法？">
+<meta property="og:url" content="https://huobingnan.github.io/2023/02/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E6%9C%89%E5%87%A0%E7%A7%8D%E5%81%9A%E6%B3%95/index.html">
+<meta property="og:site_name" content="Bryan&#39;s Blog">
+<meta property="og:description" content="0. Preface    开头先说几句记录心情的废话，考研结束后去牛客看了一下各位大佬的面经，感觉恍如隔世。对于一个标准的Java Boy而言，当看到一篇实习岗位的八股文竟然要涉及到JVM底层调优时，不由得一阵心悸。没想到Java的开发岗已经如此之卷，这也坚定了我要写本篇博文的信心。既然要卷，做不了Java Boy们的卷王，那就做Java Boy们的”孔乙己“吧。  本篇依然是”茴香豆“系列，讲">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%B0%81%E9%9D%A2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E4%B8%89%E6%8C%87%E9%92%88.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%80%92%E5%BD%92.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88.png">
+<meta property="article:published_time" content="2023-02-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-17T08:27:20.796Z">
+<meta property="article:author" content="Bryan Huo">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Algorithm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%B0%81%E9%9D%A2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Bryan's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/image/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Bryan&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Miracles happen everday</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/resource/index.html">Resource</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://huobingnan.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-反转链表有几种做法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/02/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E6%9C%89%E5%87%A0%E7%A7%8D%E5%81%9A%E6%B3%95/" class="article-date">
+  <time class="dt-published" datetime="2023-02-16T16:00:00.000Z" itemprop="datePublished">2023-02-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      反转链表有几种转法？
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css" /><div class=".article-gallery"><h2 id="0-Preface"><a href="#0-Preface" class="headerlink" title="0. Preface"></a>0. Preface</h2><hr>
+<p>开头先说几句记录心情的废话，考研结束后去牛客看了一下各位大佬的面经，感觉恍如隔世。对于一个标准的Java Boy而言，当看到一篇实习岗位的八股文竟然要涉及到JVM底层调优时，不由得一阵心悸。没想到Java的开发岗已经如此之卷，这也坚定了我要写本篇博文的信心。既然要卷，做不了Java Boy们的卷王，那就做Java Boy们的”孔乙己“吧。</p>
+<p>本篇依然是”茴香豆“系列，讲述一下反转链表的”转“有几种”写法“。</p>
+<p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%B0%81%E9%9D%A2.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%B0%81%E9%9D%A2.png"></a></p>
+<h2 id="1-反转链表"><a href="#1-反转链表" class="headerlink" title="1. 反转链表"></a>1. 反转链表</h2><hr>
+<p>反转链表这道题在Leetcode上被定级为<strong>简单</strong>题，在众多的链表题型中，反转操作确实没有什么排面。不过在一些公司的笔试中出现的频率也很高，算得上是算法八股的常客了。</p>
+<p>LeetCode题目链接：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-linked-list/">https://leetcode.cn/problems/reverse-linked-list/</a></p>
+<p>题目描述：给你一个单向链表，请在线性时间复杂度内，完成对链表结点的反转。注意：不要更改链表结点的数据，只更改链表结点的指针域。</p>
+<p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0.png"></a></p>
+<h2 id="2-三指针"><a href="#2-三指针" class="headerlink" title="2. 三指针"></a>2. 三指针</h2><hr>
+<p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E4%B8%89%E6%8C%87%E9%92%88.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E4%B8%89%E6%8C%87%E9%92%88.png"></a></p>
+<p>三指针的做法是最为经典的一种实现方式，如上图所示，初始时准备三个指针，分别为<em>prev</em>指向前驱结点，<em>ptr</em>指向当前结点，<em>next</em>指向后继结点。<em>next</em>指针的作用在于保存后继结点的引用，因为在翻转的过程中，要修改<em>ptr</em>的<em>next</em>域，若不事先缓存，就会造成后继结点信息的丢失。</p>
+<p>每次翻转时，只在局部翻转，即当前的<em>ptr.next</em>指向<em>prev</em>，随后，三个指针同时后撤：<em>prev &lt;- ptr</em>, <em>ptr &lt;- next</em>, <em>next &lt;- ptr.next</em>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @AC(time = "0 ms", memory = "41.5 MB", timeRank = "100%", memoryRank = "24.51%")  </span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseList</span><span class="params">(ListNode head)</span> {  </span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> <span class="literal">null</span>, ptr = head, next = <span class="literal">null</span>;  </span><br><span class="line">    <span class="keyword">for</span> (;;) {  </span><br><span class="line">        <span class="keyword">if</span> (ptr == <span class="literal">null</span>) <span class="keyword">break</span>;  </span><br><span class="line">        next = ptr.next;  </span><br><span class="line">        ptr.next = prev;  </span><br><span class="line">        </span><br><span class="line">        prev = ptr;        </span><br><span class="line">        ptr = next;    </span><br><span class="line">    }    </span><br><span class="line">    <span class="keyword">return</span> prev;  </span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-递归"><a href="#3-递归" class="headerlink" title="3. 递归"></a>3. 递归</h2><hr>
+<p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%80%92%E5%BD%92.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E9%80%92%E5%BD%92.png"></a></p>
+<p>递归的做法，是三种实现中最”妙“的一种实现，采用三指针的方式，需要在代码编写时，准备多个辅助指针，完成相关结点的记录和缓存。但是若我们能够从链表尾部（链表的最后一个节点）出发，只需作出如下指针变更：<em>head.next.next &lt;- head</em>即可完成反转操作。使用递归的方式，实质上是利用函数调用堆栈，保存每个结点的信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @AC(time = "0 ms", memory = "41.5 MB", timeRank = "100%", memoryRank = "30.04%")  </span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseListRecursion</span><span class="params">(ListNode head)</span> {  </span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) <span class="keyword">return</span> head;  </span><br><span class="line">    <span class="keyword">final</span> <span class="type">ListNode</span> <span class="variable">last</span> <span class="operator">=</span> reverseListRecursion(head.next); <span class="comment">// 找到尾结点  </span></span><br><span class="line">    <span class="comment">// 递归函数返回  </span></span><br><span class="line">    head.next.next = head; <span class="comment">// 设置反转  </span></span><br><span class="line">    head.next = <span class="literal">null</span>;  </span><br><span class="line">    <span class="keyword">return</span> last; <span class="comment">// 每次都返回在递归基处找到的尾结点  </span></span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<h2 id="4-双指针"><a href="#4-双指针" class="headerlink" title="4. 双指针"></a>4. 双指针</h2><hr>
+<p><a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88.png" class="gallery-item"><img src="https://raw.githubusercontent.com/huobingnan/ImageStore/main/230217%E7%BF%BB%E8%BD%AC%E9%93%BE%E8%A1%A8%E5%8F%8C%E6%8C%87%E9%92%88.png"></a></p>
+<p>双指针的做法与三指针无异，因为<em>head</em>结点在返回前，都没有用处，因此，可以使用头指针指向的<em>head</em>结点来替代三指针中的<em>next</em>引用，保存后继节点信息，因此双指针和三指针在思想上是差不多的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @AC(time = "0 ms", memory = "41.3 MB", timeRank = "100%", memoryRank = "47.24%")  </span></span><br><span class="line"><span class="keyword">public</span> ListNode <span class="title function_">reverseListViaDualPtr</span><span class="params">(ListNode head)</span> {  </span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">null</span> || head.next == <span class="literal">null</span>) <span class="keyword">return</span> head;  </span><br><span class="line">    <span class="type">ListNode</span> <span class="variable">prev</span> <span class="operator">=</span> head, ptr = prev.next;  </span><br><span class="line">    <span class="keyword">for</span> (;;) {  </span><br><span class="line">        <span class="keyword">if</span> (ptr == <span class="literal">null</span>) <span class="keyword">break</span>;  </span><br><span class="line">        head.next = ptr.next;  </span><br><span class="line">        ptr.next = prev;  </span><br><span class="line">  </span><br><span class="line">        prev = ptr;        ptr = head.next;  </span><br><span class="line">    }    <span class="keyword">return</span> prev;  </span><br><span class="line">}</span><br></pre></td></tr></table></figure></div><script src="https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js"></script><script>if (typeof lightGallery !== 'undefined') {
+        var options = {
+            selector: '.gallery-item'
+        };
+        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);
+        }</script>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://huobingnan.github.io/2023/02/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E6%9C%89%E5%87%A0%E7%A7%8D%E5%81%9A%E6%B3%95/" data-id="cle89sqf7000avp8hgb4chhfx" data-title="反转链表有几种转法？" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/02/12/%E5%A4%96%E8%A7%82%E6%95%B0%E5%88%97/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">外观数列</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/" rel="tag">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Concurrency/" rel="tag">Concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Garbage-Collection/" rel="tag">Garbage Collection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/" rel="tag">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" rel="tag">组成原理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 15px;">Algorithm</a> <a href="/tags/Concurrency/" style="font-size: 10px;">Concurrency</a> <a href="/tags/Garbage-Collection/" style="font-size: 10px;">Garbage Collection</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/OS/" style="font-size: 10px;">OS</a> <a href="/tags/%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 10px;">组成原理</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/02/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E6%9C%89%E5%87%A0%E7%A7%8D%E5%81%9A%E6%B3%95/">反转链表有几种转法？</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/12/%E5%A4%96%E8%A7%82%E6%95%B0%E5%88%97/">外观数列</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/10/Java%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">Java单例模式</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/29/Maven-Assembly-Plugin/">Maven Assembly Plugin</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/04/%E6%95%B0%E6%8D%AE%E7%9A%84%E6%9C%BA%E5%99%A8%E7%BA%A7%E8%A1%A8%E7%A4%BA/">数据的机器级表示</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+        署名-非商业使用-相同方式共享 3.0 国际(BY-NC-SA 3.0)
+      
+      &copy; 2023 Bryan Huo<br>
+      <!-- Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> -->
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/resource/index.html" class="mobile-nav-link">Resource</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
