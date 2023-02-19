@@ -9,8 +9,8 @@
     <category term="Concurrency" />
     <category term="Garbage Collection" />
     <category term="设计模式" />
-    <category term="Algorithm" />
     <category term="Maven" />
+    <category term="Algorithm" />
     <category term="组成原理" />
     <entry>
         <id>https://huobingnan.github.io/2023/01/29/Maven-Assembly-Plugin/</id>

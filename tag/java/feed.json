@@ -5,6 +5,16 @@
     "home_page_url": "https://huobingnan.github.io",
     "items": [
         {
+            "id": "https://huobingnan.github.io/2023/02/19/Awesome%20Java%20Posts/",
+            "url": "https://huobingnan.github.io/2023/02/19/Awesome%20Java%20Posts/",
+            "title": "Awesome Java Posts",
+            "date_published": "2023-02-18T16:00:00.000Z",
+            "content_html": "<link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css\" /><div class=\".article-gallery\"><p><em>Awesome Java Posts</em>的主要目标为收集互联网上关于Java和JVM的博客文章</p>\n<p><a href=\"https://raw.githubusercontent.com/huobingnan/ImageStore/main/230219MyDuke1.png\" class=\"gallery-item\"><img src=\"https://raw.githubusercontent.com/huobingnan/ImageStore/main/230219MyDuke1.png\"></a></p>\n<span id=\"more\"></span>\n\n<h2 id=\"JDK\"><a href=\"#JDK\" class=\"headerlink\" title=\"JDK\"></a>JDK</h2><hr>\n<h3 id=\"1-The-Incredible-Shrinking-Java-Platform\"><a href=\"#1-The-Incredible-Shrinking-Java-Platform\" class=\"headerlink\" title=\"1. The Incredible Shrinking Java Platform\"></a>1. The Incredible Shrinking Java Platform</h3><p><strong>摘要</strong>： JDK 9 introduced the <em>jlink</em> command. This is a tool that can generate a custom Java runtime that only contains the modules that are required for a given application.<br><strong>链接</strong>：<a href=\"https://www.azul.com/blog/the-incredible-shrinking-java-platform/\">https://www.azul.com/blog/the-incredible-shrinking-java-platform/</a><br><strong>来源</strong>：Azul官网<br><strong>发布于</strong>: 2018-03-21</p>\n<h2 id=\"Artificial-Intelligence-amp-Data-Science\"><a href=\"#Artificial-Intelligence-amp-Data-Science\" class=\"headerlink\" title=\"Artificial Intelligence & Data Science\"></a>Artificial Intelligence &amp; Data Science</h2><hr>\n<h3 id=\"1-GROOVY-AND-DATA-SCIENCE\"><a href=\"#1-GROOVY-AND-DATA-SCIENCE\" class=\"headerlink\" title=\"1. GROOVY AND DATA SCIENCE\"></a>1. GROOVY AND DATA SCIENCE</h3><p><strong>摘要</strong>：JVM languages have also been widely used for data science. Languages like Java and Scala are often considered for data science projects since running on the JVM can bring many benefits.<br><strong>链接</strong>：<a href=\"https://www.javaadvent.com/2022/12/groovy-and-data-science.html\">https://www.javaadvent.com/2022/12/groovy-and-data-science.html</a><br><strong>来源</strong>：Java Advent<br><strong>发布于</strong>：2022-12-17</p>\n</div><script src=\"https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js\"></script><script>if (typeof lightGallery !== 'undefined') {\n        var options = {\n            selector: '.gallery-item'\n        };\n        lightGallery(document.getElementsByClassName('.article-gallery')[0], options);\n        }</script>",
+            "tags": [
+                "Java"
+            ]
+        },
+        {
             "id": "https://huobingnan.github.io/2023/02/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E6%9C%89%E5%87%A0%E7%A7%8D%E5%81%9A%E6%B3%95/",
             "url": "https://huobingnan.github.io/2023/02/17/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8%E6%9C%89%E5%87%A0%E7%A7%8D%E5%81%9A%E6%B3%95/",
             "title": "反转链表有几种转法？",
