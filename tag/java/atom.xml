@@ -5,12 +5,12 @@
     <link href="https://huobingnan.github.io" />
     <updated>2023-02-22T16:00:00.000Z</updated>
     <category term="Java" />
-    <category term="Maven" />
-    <category term="Algorithm" />
-    <category term="设计模式" />
     <category term="OS" />
     <category term="Concurrency" />
     <category term="Garbage Collection" />
+    <category term="设计模式" />
+    <category term="Maven" />
+    <category term="Algorithm" />
     <category term="组成原理" />
     <entry>
         <id>https://huobingnan.github.io/2023/02/23/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%A8%B3%E5%AE%9A%E6%80%A7%E7%9A%84%E5%BA%94%E7%94%A8/</id>
@@ -175,12 +175,15 @@
         <link rel="alternate" href="https://huobingnan.github.io/2023/02/19/Awesome%20Java%20Posts/"/>
         <content type="html">&lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;https://cdn.jsdelivr.net/lightgallery.js/1.0.1/css/lightgallery.min.css&#34; /&gt;&lt;div class=&#34;.article-gallery&#34;&gt;&lt;p&gt;&lt;em&gt;Awesome Java Posts&lt;/em&gt;的主要目标为收集互联网上关于Java和JVM的博客文章&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230219MyDuke1.png&#34; class=&#34;gallery-item&#34;&gt;&lt;img src=&#34;https://raw.githubusercontent.com/huobingnan/ImageStore/main/230219MyDuke1.png&#34;&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;span id=&#34;more&#34;&gt;&lt;/span&gt;
-
 &lt;h2 id=&#34;JDK&#34;&gt;&lt;a href=&#34;#JDK&#34; class=&#34;headerlink&#34; title=&#34;JDK&#34;&gt;&lt;/a&gt;JDK&lt;/h2&gt;&lt;hr&gt;
 &lt;h3 id=&#34;1-The-Incredible-Shrinking-Java-Platform&#34;&gt;&lt;a href=&#34;#1-The-Incredible-Shrinking-Java-Platform&#34; class=&#34;headerlink&#34; title=&#34;1. The Incredible Shrinking Java Platform&#34;&gt;&lt;/a&gt;1. The Incredible Shrinking Java Platform&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;： JDK 9 introduced the &lt;em&gt;jlink&lt;/em&gt; command. This is a tool that can generate a custom Java runtime that only contains the modules that are required for a given application.&lt;br&gt;&lt;strong&gt;链接&lt;/strong&gt;：&lt;a href=&#34;https://www.azul.com/blog/the-incredible-shrinking-java-platform/&#34;&gt;https://www.azul.com/blog/the-incredible-shrinking-java-platform/&lt;/a&gt;&lt;br&gt;&lt;strong&gt;来源&lt;/strong&gt;：Azul官网&lt;br&gt;&lt;strong&gt;发布于&lt;/strong&gt;: 2018-03-21&lt;/p&gt;
+&lt;h3 id=&#34;2-Class-Data-Sharing&#34;&gt;&lt;a href=&#34;#2-Class-Data-Sharing&#34; class=&#34;headerlink&#34; title=&#34;2. Class Data Sharing&#34;&gt;&lt;/a&gt;2. Class Data Sharing&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;：Class data sharing (CDS) helps reduce the startup time for Java programming language applications, in particular smaller applications, as well as reduce footprint.&lt;br&gt;&lt;strong&gt;链接&lt;/strong&gt;：&lt;a href=&#34;https://docs.oracle.com/javase/8/docs/technotes/guides/vm/class-data-sharing.html&#34;&gt;https://docs.oracle.com/javase/8/docs/technotes/guides/vm/class-data-sharing.html&lt;/a&gt;&lt;br&gt;&lt;strong&gt;来源&lt;/strong&gt;：Oracle&lt;br&gt;&lt;strong&gt;发布于&lt;/strong&gt;：Unknown&lt;/p&gt;
 &lt;h2 id=&#34;Artificial-Intelligence-amp-Data-Science&#34;&gt;&lt;a href=&#34;#Artificial-Intelligence-amp-Data-Science&#34; class=&#34;headerlink&#34; title=&#34;Artificial Intelligence &amp; Data Science&#34;&gt;&lt;/a&gt;Artificial Intelligence &amp;amp; Data Science&lt;/h2&gt;&lt;hr&gt;
 &lt;h3 id=&#34;1-GROOVY-AND-DATA-SCIENCE&#34;&gt;&lt;a href=&#34;#1-GROOVY-AND-DATA-SCIENCE&#34; class=&#34;headerlink&#34; title=&#34;1. GROOVY AND DATA SCIENCE&#34;&gt;&lt;/a&gt;1. GROOVY AND DATA SCIENCE&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;：JVM languages have also been widely used for data science. Languages like Java and Scala are often considered for data science projects since running on the JVM can bring many benefits.&lt;br&gt;&lt;strong&gt;链接&lt;/strong&gt;：&lt;a href=&#34;https://www.javaadvent.com/2022/12/groovy-and-data-science.html&#34;&gt;https://www.javaadvent.com/2022/12/groovy-and-data-science.html&lt;/a&gt;&lt;br&gt;&lt;strong&gt;来源&lt;/strong&gt;：Java Advent&lt;br&gt;&lt;strong&gt;发布于&lt;/strong&gt;：2022-12-17&lt;/p&gt;
+&lt;h2 id=&#34;Concurrency-amp-Low-Latency&#34;&gt;&lt;a href=&#34;#Concurrency-amp-Low-Latency&#34; class=&#34;headerlink&#34; title=&#34;Concurrency &amp; Low Latency&#34;&gt;&lt;/a&gt;Concurrency &amp;amp; Low Latency&lt;/h2&gt;&lt;hr&gt;
+&lt;h3 id=&#34;1-LMAX-Disruptor&#34;&gt;&lt;a href=&#34;#1-LMAX-Disruptor&#34; class=&#34;headerlink&#34; title=&#34;1. LMAX Disruptor&#34;&gt;&lt;/a&gt;1. LMAX Disruptor&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;：LMAX was established to create a very high performance financial exchange. As part of our work to accomplish this goal we have evaluated several approaches to the design of such a system, but as we began to measure these we ran into some fundamental limits with conventional approaches.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;链接&lt;/strong&gt;：&lt;a href=&#34;https://lmax-exchange.github.io/disruptor/disruptor.html&#34;&gt;https://lmax-exchange.github.io/disruptor/disruptor.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：LMAX Github Page&lt;br&gt;&lt;strong&gt;发布于&lt;/strong&gt;：2011-03&lt;/p&gt;
 &lt;/div&gt;&lt;script src=&#34;https://cdn.jsdelivr.net/lightgallery.js/1.0.1/js/lightgallery.min.js&#34;&gt;&lt;/script&gt;&lt;script&gt;if (typeof lightGallery !== &#39;undefined&#39;) {
         var options = {
             selector: &#39;.gallery-item&#39;
