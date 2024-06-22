@@ -54,7 +54,8 @@ jobs:
           cp -a /opt/Gmeek/docs ${{ github.workspace }} 
           cp -a /opt/Gmeek/backup ${{ github.workspace }} 
           cp /opt/Gmeek/blogBase.json ${{ github.workspace }}
-          cp ${{ github.workspace }}/index.css /opt/Gmeek/docs/
+          cp -a ${{ github.workspace }}/index.css /opt/Gmeek/docs/index.css
+          ls /opt/Gmeek/docs
           
       - name: update html
         run: |
