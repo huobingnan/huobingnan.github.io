@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Zhi+Mang+Xing&display=swap');
+
+.blogTitle {
+    font-size: 45px;
+    font-family: 'Zhi Mang Xing';
+}
+
+#content > div:nth-child(1) {
+    font-family: 'Zhi Mang Xing';
+    font-size: 23px;
+}
+
+nav.SideNav.border {
+    font-family: 'Noto Sans SC';
+}
+
+#postBody {
+    font-size: 19px;
+}
