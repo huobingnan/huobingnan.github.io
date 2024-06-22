@@ -17,6 +17,6 @@
     "bottomText": "文章版权: CC-BY-NC-ND",
     "showPostSource": 0,
     "UTC": 8,
-    "head": "<link href=\"https://raw.githubusercontent.com/huobingnan/huobingnan.github.io/main/index.css\" rel=\"stylesheet\">"
+    "indexStyle": "<link href=\"https://raw.githubusercontent.com/huobingnan/huobingnan.github.io/main/index.css\" rel=\"stylesheet\">"
     
 }
