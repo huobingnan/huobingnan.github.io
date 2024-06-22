@@ -17,6 +17,6 @@
     "bottomText": "文章版权: CC-BY-NC-ND",
     "showPostSource": 0,
     "UTC": 8,
-    "style": "<link href=\"/index.css\" rel=\"stylesheet\">",
+    "style": "<link href=\"/post.css\" rel=\"stylesheet\">",
     "indexStyle": "<link href=\"/index.css\" rel=\"stylesheet\">"
 }

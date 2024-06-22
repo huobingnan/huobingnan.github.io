@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Zhi+Mang+Xing&display=swap');@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&family=Zhi+Mang+Xing&display=swap');
+
+#content > #postBody {
+    font-family: 'Noto Sans SC';
+    font-size: 19px;
+}
