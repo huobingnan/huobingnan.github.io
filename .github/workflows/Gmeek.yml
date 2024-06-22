@@ -59,7 +59,7 @@ jobs:
           
       - name: update html
         run: |
-          ls
+          ls ./docs
           git config --local user.email "$(jq -r ".email" config.json)"
           git config --local user.name "${{ github.repository_owner }}"
           git add .
