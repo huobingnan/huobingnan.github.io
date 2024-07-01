@@ -4,7 +4,7 @@
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
     <link rel="icon" href="https://avatars.githubusercontent.com/u/75068951?v=4">
 <meta name="description" content="TUI是Text User Interface的简写，所谓Text User Interface与Graphic User Interface是类似的，它们都是一种图形用户接口。">
 <meta property="og:title" content="Lanterna简要介绍">
@@ -99,8 +99,10 @@ tasks<span class="pl-k">.</span>register(<span class="pl-s"><span class="pl-pds"
     }  
 }</pre></div></div>
 <div style="font-size:small;margin-top:8px;float:right;">文章版权: CC-BY-NC-ND</div>
+
 <button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
 <div class="comments" id="comments"></div>
+
 </div>
     <div id="footer">Copyright © <span id="year"></span><a href="https://huobingnan.github.io"> BryanHuo的技术树洞 </a>
 <p>
@@ -130,6 +132,8 @@ console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5p
 <script>
 document.getElementById("pathHome").setAttribute("d",IconList["home"]);
 document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
 
 function openComments(){
     cm=document.getElementById("comments");
